@@ -35,11 +35,15 @@ public class Rental {
                     result += (this.getDayRented() - 3) * 1.5;
                 }
                 break;
+            case Movie.LITERARY:
+                result += 6;
+                break;
         }
         return result;
     }
 
-    int getFrequentRentalPoints() {
+    public double getFrequentRentalPoints() {
+        if(this.getMovie().getPriceCode()==Movie.LITERARY) return 1.5;
         if ((this.getMovie().getPriceCode() == Movie.NEW_RELEASE) && this.getDayRented() > 1) {
             return 2;
         } else {

@@ -11,7 +11,7 @@ public class CustomerTest {
     @Test
     public void should_return_correct_statement_given_customer_has_no_rental() {
         String statement = customer.statement();
-        assertEquals("Rental Record for Carrie\nAmount owed is 0.0\nYou earned 0 frequent renter points", statement);
+        assertEquals("Rental Record for Carrie\nAmount owed is 0.0\nYou earned 0.0 frequent renter points", statement);
     }
 
     @Test
@@ -25,7 +25,7 @@ public class CustomerTest {
         assertEquals("Rental Record for Carrie\n" +
                 "\t" + regularMovie.getTitle() + "\t2.0\n" +
                 "Amount owed is 2.0\n" +
-                "You earned 1 frequent renter points", statement);
+                "You earned 1.0 frequent renter points", statement);
     }
 
     @Test
@@ -39,7 +39,7 @@ public class CustomerTest {
         assertEquals("Rental Record for Carrie\n" +
                 "\t" + regularMovie.getTitle() + "\t3.5\n" +
                 "Amount owed is 3.5\n" +
-                "You earned 1 frequent renter points", statement);
+                "You earned 1.0 frequent renter points", statement);
     }
 
     @Test
@@ -53,7 +53,7 @@ public class CustomerTest {
         assertEquals("Rental Record for Carrie\n" +
                 "\t" + newReleaseMovie.getTitle() + "\t3.0\n" +
                 "Amount owed is 3.0\n" +
-                "You earned 1 frequent renter points", statement);
+                "You earned 1.0 frequent renter points", statement);
     }
 
     @Test
@@ -67,7 +67,7 @@ public class CustomerTest {
         assertEquals("Rental Record for Carrie\n" +
                 "\t" + newReleaseMovie.getTitle() + "\t6.0\n" +
                 "Amount owed is 6.0\n" +
-                "You earned 2 frequent renter points", statement);
+                "You earned 2.0 frequent renter points", statement);
     }
 
     @Test
@@ -81,7 +81,7 @@ public class CustomerTest {
         assertEquals("Rental Record for Carrie\n" +
                 "\t" + childrenMovie.getTitle() + "\t1.5\n" +
                 "Amount owed is 1.5\n" +
-                "You earned 1 frequent renter points", statement);
+                "You earned 1.0 frequent renter points", statement);
     }
 
     @Test
@@ -95,7 +95,7 @@ public class CustomerTest {
         assertEquals("Rental Record for Carrie\n" +
                 "\t" + childrenMovie.getTitle() + "\t3.0\n" +
                 "Amount owed is 3.0\n" +
-                "You earned 1 frequent renter points", statement);
+                "You earned 1.0 frequent renter points", statement);
     }
 
     @Test
@@ -109,7 +109,21 @@ public class CustomerTest {
         assertEquals("<H1>Rentals for <EM>Carrie</EM></H1><P>\n" +
                 "我不是药神:\t3.0<BR>\n" +
                 "<P>You owe<EM>3.0</EM><P>\n" +
-                "On this rental you earned <EM>1</EM> frequent renter points<P>", statement);
+                "On this rental you earned <EM>1.0</EM> frequent renter points<P>", statement);
+    }
+
+    @Test
+    public void should_return_correct_statement_given_customer_has_rent_one_literary_movie_for_1_day() {
+        Movie  literaryMovie = new Movie("海角七号", 3);
+        Rental oneDayRental = new Rental( literaryMovie, 1);
+        customer.addRental(oneDayRental);
+
+        String statement = customer.statement();
+
+        assertEquals("Rental Record for Carrie\n" +
+                "\t" +  literaryMovie.getTitle() + "\t6.0\n" +
+                "Amount owed is 6.0\n" +
+                "You earned 1.5 frequent renter points", statement);
     }
 
 }
