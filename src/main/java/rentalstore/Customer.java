@@ -24,10 +24,10 @@ public class Customer {
         String result = "Rental Record for " + getName() + "\n";
         while(rentals.hasMoreElements()){
             Rental each = (Rental) rentals.nextElement();
-            result += "\t" + each.getMovie().getTitle() + "\t" + getEachCharge(each) + "\n";
+            result += "\t" + each.getMovie().getTitle() + "\t" + each.getEachCharge() + "\n";
         }
         result += "Amount owed is " + getTotalAmount() + "\n";
-        result += "You earned " + getFrequentRenterPoints() + " frequent renter points";
+        result += "You earned " + getTotalFrequentRenterPoints() + " frequent renter points";
         return result;
     }
 
@@ -36,10 +36,10 @@ public class Customer {
         String result = "<H1>Rentals for <EM>" + getName() + "</EM></H1><P>\n";
         while (rentals.hasMoreElements()) {
             Rental each = (Rental) rentals.nextElement();
-            result += each.getMovie().getTitle() + ":\t" + getEachCharge(each) + "<BR>\n";
+            result += each.getMovie().getTitle() + ":\t" + each.getEachCharge() + "<BR>\n";
         }
         result += "<P>You owe<EM>" + getTotalAmount() + "</EM><P>\n";
-        result += "On this rental you earned <EM>" + getFrequentRenterPoints() +
+        result += "On this rental you earned <EM>" + getTotalFrequentRenterPoints() +
                 "</EM> frequent renter points<P>";
         return result;
     }
@@ -50,43 +50,18 @@ public class Customer {
         double totalAmount = 0;
         while (rentals.hasMoreElements()) {
             Rental each = (Rental) rentals.nextElement();
-            totalAmount += getEachCharge(each);
+            totalAmount += each.getEachCharge();
         }
         return totalAmount;
     }
 
-    public int getFrequentRenterPoints(){
+    public int getTotalFrequentRenterPoints(){
         Enumeration rentals = this.rentals.elements();
         int frequentRenterPoints = 0;
         while (rentals.hasMoreElements()) {
             Rental each = (Rental) rentals.nextElement();
-            frequentRenterPoints ++;
-            if((each.getMovie().getPriceCode() == Movie.NEW_RELEASE) && each.getDayRented() > 1){
-                frequentRenterPoints ++;
-            }
+            frequentRenterPoints = each.getFrequentRentalPoints();
         }
         return frequentRenterPoints;
-    }
-
-    public double getEachCharge(Rental each){
-        double eachCharge = 0;
-        switch (each.getMovie().getPriceCode()){
-            case Movie.REGULAR:
-                eachCharge += 2;
-                if(each.getDayRented() > 2){
-                    eachCharge+=(each.getDayRented() - 2) * 1.5;
-                }
-                break;
-            case Movie.NEW_RELEASE:
-                eachCharge+=each.getDayRented()*3;
-                break;
-            case Movie.CHILDRENS:
-                eachCharge+=1.5;
-                if(each.getDayRented() > 3){
-                    eachCharge += (each.getDayRented() -3)*1.5;
-                }
-                break;
-        }
-        return eachCharge;
     }
 }
