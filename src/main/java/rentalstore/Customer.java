@@ -20,7 +20,6 @@ public class Customer {
     }
 
     public String statement(){
-        double totalAmount = 0;
         int frequentRenterPoints = 0;
         Enumeration rentals = this.rentals.elements();
         String result = "Rental Record for " + getName() + "\n";
@@ -28,8 +27,6 @@ public class Customer {
 
             Rental each = (Rental) rentals.nextElement();
 
-            double thisAmount = getEachCharge(each);
-
             //add frequent renter points
             frequentRenterPoints ++;
             //add bonus for a two day new release rental
@@ -38,18 +35,16 @@ public class Customer {
             }
 
             //show figures for this rental
-            result += "\t" + each.getMovie().getTitle() + "\t" + String.valueOf(thisAmount) + "\n";
-            totalAmount += thisAmount;
+            result += "\t" + each.getMovie().getTitle() + "\t" + getEachCharge(each) + "\n";
         }
 
         //add footer lines
-        result += "Amount owed is " + String.valueOf(totalAmount) + "\n";
+        result += "Amount owed is " + getTotalAmount() + "\n";
         result += "You earned " + String.valueOf(frequentRenterPoints) + " frequent renter points";
         return result;
     }
 
     public String htmlStatement() {
-        double totalAmount = 0;
         int frequentRenterPoints = 0;
         Enumeration rentals = this.rentals.elements();
         String result = "<H1>Rentals for <EM>" + getName() + "</EM></H1><P>\n";
@@ -57,8 +52,6 @@ public class Customer {
 
             Rental each = (Rental) rentals.nextElement();
 
-            double thisAmount = getEachCharge(each);
-
             //add frequent renter points
             frequentRenterPoints ++;
             //add bonus for a two day new release rental
@@ -67,14 +60,24 @@ public class Customer {
             }
 
             //show figures for this rental
-            result += each.getMovie().getTitle() + ":\t" + String.valueOf(thisAmount) + "<BR>\n";
-            totalAmount += thisAmount;
+            result += each.getMovie().getTitle() + ":\t" + getEachCharge(each) + "<BR>\n";
         }
         //add footer lines
-        result += "<P>You owe<EM>" + totalAmount + "</EM><P>\n";
+        result += "<P>You owe<EM>" + getTotalAmount() + "</EM><P>\n";
         result += "On this rental you earned <EM>" + frequentRenterPoints +
                 "</EM> frequent renter points<P>";
         return result;
+    }
+
+
+    public double getTotalAmount(){
+        double totalAmount = 0;
+        Enumeration rentals = this.rentals.elements();
+        while (rentals.hasMoreElements()) {
+            Rental each = (Rental) rentals.nextElement();
+            totalAmount += getEachCharge(each);
+        }
+        return totalAmount;
     }
 
     public double getEachCharge(Rental each){
